@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 text-center">
+                <h1>URL Shortener</h1>
+            </div>
+        </div>
+        <!-- input box starts -->
+        <form action="/create" method="POST">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="longUrl" placeholder="Enter URL to be shortened"
+                        aria-label="long-url" aria-describedby="button-addon2" />
+                    <div class="input-group-append">
+                        <input value="submit" class="btn bg-info text-light btn-outline-secondary" type="submit"
+                            id="button-addon2" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- input box ends -->
+        <div class="row">
+            <!-- card start -->
+            <% for (let i=0; i<urlResult.length; i++) { %>
+            <div class="col-xl-3">
+                <div class="card mb-3" style="max-width: 18rem;">
+                    <div class="card-header bg-info text-white">Click Count: <%= urlResult[i].clickCount %> </div>
+                    <div class="card-body bg-light text-dark">
+                        <h6 class="card-title">Short URl: <a href="http://localhost:3000/<%= urlResult[i].shortUrl %>" target="_blank" class="">http://localhost:3000/<%= urlResult[i].shortUrl %></a></h6>
+                        <p class="card-text">
+                            Original URl: <%= urlResult[i].longUrl %>
+                        </p>
+                        <a href="/delete/<%= urlResult[i].id %>" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <!-- card end -->
+           
+        </div>
+    </div>
+</body>
+
+</html>
