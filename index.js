@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost:27017/urlShortener")
+mongoose.connect("mongodb+srv://alphasyed:syedalphamod@cluster0.r1yds.mongodb.net/urlshortener?retryWrites=true&w=majority")
 
 const { UrlModel } = require('./models/urlshort');
 // Middleware
