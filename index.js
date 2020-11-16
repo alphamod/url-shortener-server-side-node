@@ -3,11 +3,12 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://alphasyed:syedalphamod@cluster0.r1yds.mongodb.net/urlshortener?retryWrites=true&w=majority")
+mongoose.set('useUnifiedTopology', true);
+mongoose.connect("mongodb+srv://alphasyed:syedalphamod@cluster0.r1yds.mongodb.net/urlshortener?retryWrites=true&w=majority", { useNewUrlParser: true, useCreateIndex: true });
 
 const { UrlModel } = require('./models/urlshort');
 // Middleware
-app.use(express.static('public'));
+app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -43,16 +44,27 @@ app.post('/create', (req, res) => {
         // console.log(data);
         res.redirect("/");
     });
-})
+});
+
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.get('/:shortId', (req, res) => {
+    // console.log(req.params.shortId);
     UrlModel.findOne({ shortUrl: req.params.shortId }, (err, result) => {
+        // console.log("result", result)
         if (err) throw err;
-        UrlModel.findByIdAndUpdate({ _id: result.id }, { $inc: { clickCount: 1 } }, (err, updatedResult) => {
+        // if (result !== null) {
+        UrlModel.findByIdAndUpdate({ _id: result._id }, { $inc: { clickCount: 1 } }, (err, updatedResult) => {
             // console.log(err);
             if (err) throw err;
-            res.redirect(result.longUrl);
-        })
+            console.log(result.longUrl);
+            const finalLongUrl = (result.longUrl.startsWith("http")) ? result.longUrl : `http://${result.longUrl}` 
+            console.log(finalLongUrl);
+            res.redirect(finalLongUrl);
+        });
+        //     } else {
+        //         res.status(404).render('404');
+        // }
     })
 })
 
