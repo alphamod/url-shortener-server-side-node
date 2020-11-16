@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const PORT = process.env.PORT || 3000;
 
 mongoose.set('useUnifiedTopology', true);
 mongoose.connect("mongodb+srv://alphasyed:syedalphamod@cluster0.r1yds.mongodb.net/urlshortener?retryWrites=true&w=majority", { useNewUrlParser: true, useCreateIndex: true });
@@ -75,6 +76,10 @@ app.get('/delete/:id', (req, res) => {
     });
 });
 
+app.get('*', (req, res) => {
+    res.status(404).render('404');
+})
+
 let generateUrl = () => {
     // let existing
     // UrlModel.find((err, result) => {
@@ -92,6 +97,6 @@ let generateUrl = () => {
 }
 
 
-app.listen(3000, () => {
-    console.log('Node listening on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
